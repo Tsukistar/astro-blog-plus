@@ -1,0 +1,53 @@
+---
+import BaseHead from "../../components/BaseHead.astro";
+import SinglePageHead from "../../components/SinglePageHead.astro";
+import Header from "../../components/Header.astro";
+import MobileMenu from "../../components/MobileMenu.astro";
+import WalineComment from "../../components/WalineComment.astro";
+import Footer from "../../components/Footer.astro";
+
+type LanguageCollection = "zh-hant";
+
+// 获取当前语言
+const url = new URL(Astro.request.url);
+const lang = url.pathname.split("/")[1] as LanguageCollection;
+
+// 动态加载翻译文件
+import translationsZhHant from "../../locales/zh-hant/translation.json";
+const translations = {
+  "zh-hant": translationsZhHant,
+}[lang];
+
+const t = (key: string) => {
+  const keys = key.split(".");
+  return (
+    keys.reduce(
+      (acc, k) => acc && (acc as { [key: string]: any })[k],
+      translations
+    ) || key
+  );
+};
+---
+
+<html lang=`${lang}`>
+  <head>
+    <BaseHead title={t("header.message-board")} description={t("site.description")} />
+    <SinglePageHead />
+    <style>
+      @media (max-width: 720px) {
+      }
+    </style>
+  </head>
+  <body>
+    <MobileMenu />
+    <Header image="/images/header/message-board-header.webp" />
+    <div class="single-page">
+      <main>
+        <h1>{t("header.message-board")}</h1>
+        <p>這裡是一塊留言板，有任何想要對我說的話都可以在這裡留言哦 (,,・ω・,,)</p>
+        <WalineComment lang="zh-hant" />
+      </main>
+    </div>
+    <Footer />
+  </body>
+</html>

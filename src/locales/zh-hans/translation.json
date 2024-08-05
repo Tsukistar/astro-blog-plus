@@ -1,0 +1,31 @@
+{
+    "site": {
+        "title": "Astro Blog Plus",
+        "description": "欢迎使用Astro！",
+        "redirect_before": "正在跳转到博客主页...",
+        "redirect_after": "如果长时间未跳转，请点击这个",
+        "redirect_target": "链接"
+    },
+    "header": {
+        "home": "主页",
+        "archives": "归档",
+        "tags": "标签",
+        "message-board": "留言板",
+        "friends": "朋友们",
+        "about": "关于我",
+        "goto": "开往"
+    },
+    "article": {
+        "pubDate": "发布时间：",
+        "updateDate": "最后一次更新于：",
+        "tags": "标签：",
+        "license_before":"除另有说明外，本博客的所有文章均使用",
+        "license_after":"许可, 作者保留所有权利, 如需转载请注明出处。",
+        "coffee": "请我喝杯咖啡"
+    },
+    "footer": {
+        "build_with": "构建此博客使用的框架为", 
+        "theme": ", 主题为",
+        "update_days": "作者已持续更新博客 {{daysDiff}} 天。"
+    }
+}

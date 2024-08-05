@@ -1,16 +1,32 @@
 import { defineCollection, z } from 'astro:content';
 
-const blog = defineCollection({
-	type: 'content',
-	// Type-check frontmatter using a schema
-	schema: z.object({
-		title: z.string(),
-		description: z.string(),
-		// Transform string to Date object
-		pubDate: z.coerce.date(),
-		updatedDate: z.coerce.date().optional(),
-		heroImage: z.string().optional(),
-	}),
+const blogSchema = z.object({
+  top: z.number().optional(),
+  title: z.string(),
+  description: z.string().optional(),
+  pubDate: z.date(),
+  updatedDate: z.date().optional(),
+  heroImage: z.string().optional(),
+  tags: z.array(z.string()).optional(),
 });
 
-export const collections = { blog };
+const zhHansCollection = defineCollection({
+  schema: blogSchema,
+  type: 'content', // 使用 'content' 类型
+});
+
+const zhHantCollection = defineCollection({
+  schema: blogSchema,
+  type: 'content', // 使用 'content' 类型
+});
+
+const enCollection = defineCollection({
+  schema: blogSchema,
+  type: 'content', // 使用 'content' 类型
+});
+
+export const collections = {
+  'zh-hans': zhHansCollection,
+  'zh-hant': zhHantCollection,
+  'en': enCollection,
+};

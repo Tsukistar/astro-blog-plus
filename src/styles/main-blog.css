@@ -1,0 +1,113 @@
+.main-blog {
+  transition: background 0.5s ease-in-out, color 0.5s ease-in-out;
+  background: url("/images/main-background-light.webp") no-repeat center center
+    fixed;
+  background-size: cover;
+}
+.dark .main-blog {
+  background: url("/images/main-background-dark.webp") no-repeat center center
+    fixed;
+  background-size: cover;
+}
+
+.main-blog main {
+  width: 960px;
+}
+
+.main-blog ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.main-blog ul li {
+  width: calc(50% - 1rem);
+}
+.main-blog ul li * {
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+.main-blog ul li:first-child {
+  width: 100%;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.main-blog ul li:first-child img {
+  width: 100%;
+  height: 400px;
+}
+.main-blog ul li:first-child .title {
+  font-size: 2.369rem;
+}
+.main-blog ul li img {
+  margin-bottom: 0.5rem;
+  border-radius: 12px;
+  height: 250px;
+  object-fit: cover;
+}
+.main-blog ul li a {
+  display: block;
+}
+.main-blog .title {
+  margin: 0;
+  color: rgb(var(--black));
+  line-height: 1;
+}
+.dark .main-blog .title {
+  color: #d8ae7e;
+}
+.main-blog .date {
+  margin: 0;
+  color: rgb(var(--gray));
+}
+.dark .main-blog ul li * {
+  color: #d8ae7e;
+}
+.main-blog ul li a:hover h4,
+.main-blog ul li a:hover .date {
+  color: rgb(var(--accent));
+}
+.main-blog ul a:hover img {
+  box-shadow: var(--box-shadow);
+}
+.dark .main-blog ul a:hover {
+  color: #66ccff;
+}
+
+.main-blog a {
+  color: var(--accent);
+}
+.main-blog a:hover {
+  color: #66ccff;
+}
+.dark .main-blog a {
+  color: #d8ae7e;
+}
+.dark .main-blog a:hover p {
+  color: #f7dcb9;
+}
+
+@media (max-width: 720px) {
+  .main-blog ul {
+    gap: 0.5em;
+  }
+  .main-blog ul li {
+    width: 100%;
+    text-align: center;
+  }
+  .main-blog ul li img {
+    height: 200px;
+  }
+  .main-blog ul li:first-child {
+    margin-bottom: 0;
+  }
+  .main-blog ul li:first-child img {
+    width: 100%;
+    height: 200px;
+  }
+  .main-blog ul li:first-child .title {
+    font-size: 1.563em;
+  }
+}

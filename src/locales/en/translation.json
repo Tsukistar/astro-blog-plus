@@ -1,0 +1,31 @@
+{
+    "site": {
+        "title": "Astro Blog Plus",
+        "description": "Welcome to Astro!",
+        "redirect_before": "Redirecting to the Home Page...",
+        "redirect_after": "If you are not redirected automatically, follow this ",
+        "redirect_target": "link"
+    },
+    "header": {
+        "home": "Home",
+        "archives": "Archives",
+        "tags": "Tags",
+        "message-board": "Message Board",
+        "friends": "Friends",
+        "about": "About",
+        "goto": "Travellings"
+    },
+    "article": {
+        "pubDate": "Posted on ",
+        "updateDate": "Last updated on ",
+        "tags": "Tags: ",
+        "license_before":"Unless otherwise stated, all articles on this blog are licensed under",
+        "license_after":"license. The author reserves all rights. Please credit the source if you wish to reprint.",
+        "coffee": "Buy me a coffee"
+    },
+    "footer": {
+        "build_with": "This blog has been built with ", 
+        "theme": ", Theme: ",
+        "update_days": "The author has been blogging for {{daysDiff}} days."
+    }
+}

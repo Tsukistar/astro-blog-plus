@@ -1,0 +1,51 @@
+/* Single Page CSS */
+.single-page {
+  transition: background 0.5s ease-in-out, color 0.5s ease-in-out;
+  background: url("/images/main-background-light.webp") no-repeat center center
+    fixed;
+  background-size: cover;
+}
+.dark .single-page {
+  background: url("/images/main-background-dark.webp") no-repeat center center
+    fixed;
+  background-size: cover;
+}
+.single-page main {
+  width: 960px;
+}
+
+.single-page h1 {
+  text-align: center;
+}
+
+.single-page h4 {
+  color: #01204e;
+}
+.dark .single-page h4 {
+  color: #d8ae7e;
+}
+
+.single-page a {
+  color: var(--accent);
+}
+.single-page a:hover {
+  color: #b692c2;
+}
+.dark .single-page a {
+  color: #d8ae7e;
+}
+.dark .single-page a:hover p {
+  color: #f7dcb9;
+}
+
+.single-page hr {
+  margin: 2rem 0;
+  border: none;
+  border-top: 1px solid #01204e;
+}
+.dark .single-page hr {
+  border-top: 1px solid #d8ae7e;
+}
+
+@media (max-width: 720px) {
+}

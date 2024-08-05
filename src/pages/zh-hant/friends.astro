@@ -1,0 +1,201 @@
+---
+import BaseHead from "../../components/BaseHead.astro";
+import SinglePageHead from "../../components/SinglePageHead.astro";
+import Header from "../../components/Header.astro";
+import MobileMenu from "../../components/MobileMenu.astro";
+import WalineComment from "../../components/WalineComment.astro";
+import Footer from "../../components/Footer.astro";
+
+type LanguageCollection = "zh-hant";
+
+// 获取当前语言
+const url = new URL(Astro.request.url);
+const lang = url.pathname.split("/")[1] as LanguageCollection;
+
+// 动态加载翻译文件
+import translationsZhHant from "../../locales/zh-hant/translation.json";
+const translations = {
+  "zh-hant": translationsZhHant,
+}[lang];
+const t = (key: string) => {
+  const keys = key.split(".");
+  return (
+    keys.reduce(
+      (acc, k) => acc && (acc as { [key: string]: any })[k],
+      translations
+    ) || key
+  );
+};
+
+// 动态加载友链
+import friendsZhTw from "../../locales/zh-hant/friends.json";
+const friends = {
+  "zh-hant": friendsZhTw,
+}[lang];
+---
+<html lang=`${lang}`>
+  <head>
+    <BaseHead title={t("header.friends")} description={t("site.description")} />
+    <SinglePageHead />
+    <style>
+      .friends {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        margin: 1vh 1vw;
+      }
+
+      .friend {
+        width: 420px;
+        display: flex;
+        align-items: center;
+        padding: 0 0.5em;
+        margin: 1vh 0;
+        border: black 1px solid;
+        border-radius: 1vw;
+        background: rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+      }
+      .dark .friend {
+        border: #D8AE7E 1px solid;
+        background: rgba(0, 0, 0, 0.3);
+      }
+
+      .friend img {
+        width: 60px;
+        height: auto;
+        margin-right: 10px;
+        border-radius: 30px;
+      }
+      .friend:hover {
+        box-shadow: var(--box-shadow);
+      }
+
+      .friend-title {
+        width: 350px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .friend-description {
+        width: 350px;
+        font-size: 0.8em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      a {
+        display: flex;
+        flex: 1;
+        text-decoration: none;
+      }
+
+      p {
+          margin: 0.5em 0;
+        }
+      @media (max-width: 1024px) {
+        .friends {
+          justify-content: space-between;
+        }
+
+        .friend {
+          width: 40vw;
+          border-radius: 3vw;
+        }
+
+        .friend img {
+          width: 6vw;
+          border-radius: 3vw;
+        }
+
+        .friend-title {
+          font-size: 0.8em;
+        }
+
+        .friend-title {
+          font-size: 0.8em;
+          width: 30vw;
+        }
+
+        .friend-description {
+          font-size: 0.8em;
+          width: 30vw;
+        }
+      }
+      
+      @media (max-width: 720px) {
+        .friends {
+          margin: 1vh 0;
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .friend {
+          width: 80vw;
+          padding: 1vh 2vw;
+          justify-content: center;
+        }
+        .friend img {
+          width: 14vw;
+          border-radius: 7vw;
+        }
+
+        .friend-title {
+          font-size: 0.8em;
+          width: 60vw;
+        }
+
+        .friend-description {
+          width: 60vw;
+        }
+
+        a {
+          justify-content: flex-start;
+          flex: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <MobileMenu />
+    <Header image="/images/header/friends-header.webp" />
+    <div class="single-page">
+      <main>
+        <h1>{t("header.friends")}</h1>
+        <div class="friends">
+          {friends.map((friend) => (
+            <a href={friend.url} target="_blank">
+              <div class="friend">
+                <img src={friend.icon} alt={friend.name} />
+                <div class="friend-link">
+                  <p class="friend-title">{friend.name}</p>
+                  <p class="friend-description">{friend.description}</p>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+        <hr />
+        <h4>友鏈申請：</h4>
+        <ul>
+          <li>申請友鏈請大膽地在下方按照格式留言ヾ(●゜▽゜●)♡</li>
+          <li>請確保你的网站上所有的資源均使用HTTPS</li>
+          <li>希望你的网站在持續更新，至少每半年有一次更新</li>
+          <li>本站拒絕內容農場、採集站等，希望你的网站大部分內容是你的原創內容，而不是將其他人辛辛苦苦寫的文章東搬西湊搬運組合起來</li>
+          <li>希望能遇到讓我眼前一亮的网站或者關係密切、十分有趣的你，如果出於各種原因我們對不上電波，我會感到非常抱歉並告知</li>
+        </ul>
+        <h4>申請格式：(如果是多語言網站，可以使用'/'隔開每一項)</h4>
+        <ul>
+          <li>網站名稱：星河絮语/星河絮語/Tsukistar's Freetalk</li>
+          <li>網站地址: https://blog.tsukistar.cc</li>
+          <li>網站圖標: https://blog.tsukistar.cc/images/site-icon.jpg</li>
+          <li>網站簡介: 浩瀚中的伟大，孤独间的渺小/浩瀚中的偉大，孤獨間的渺小/Coding for the wonderful world.</li>
+        </ul>
+        <WalineComment />
+      </main>
+    <Footer />
+  </body>
+</html>

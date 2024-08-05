@@ -1,0 +1,80 @@
+---
+import BaseHead from "../../components/BaseHead.astro";
+import Header from "../../components/Header.astro";
+import SinglePageHead from "../../components/SinglePageHead.astro";
+import MobileMenu from "../../components/MobileMenu.astro";
+import Footer from "../../components/Footer.astro";
+import { getCollection } from "astro:content";
+
+type LanguageCollection = "zh-hans";
+
+// 获取当前语言
+const url = new URL(Astro.request.url);
+const lang = url.pathname.split("/")[1] as LanguageCollection;
+
+// 动态加载翻译文件
+import translationsZhHans from "../../locales/zh-hans/translation.json";
+const translations = {
+  "zh-hans": translationsZhHans,
+}[lang];
+
+const t = (key: string) => {
+  const keys = key.split(".");
+  return (
+    keys.reduce(
+      (acc, k) => acc && (acc as { [key: string]: any })[k],
+      translations
+    ) || key
+  );
+};
+
+const allPosts: any = await getCollection("zh-hans");
+const uniqueTags = [
+    ...new Set(allPosts.map((post: any) => post.data.tags).flat()),
+];
+---
+<html lang=`${lang}`>
+  <head>
+    <BaseHead title={t("header.tags")} description={t("site.description")} />
+    <SinglePageHead />
+    <style>
+      .article-tags {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        margin: 1vh 1vw;
+      }
+      .article-tags a {
+        margin: 0.5vh 0.5vw;
+        padding: 0 0.5vw;
+        text-decoration: none;
+        border: #01204E 1px dashed;
+        border-radius: 0.5vw;
+      }
+      .dark .article-tags a {
+        border: #D8AE7E 1px dashed;
+      }
+      .article-tags a p {
+        margin-block: 0;
+      }
+      @media (max-width: 720px) {
+        .article-tags a {
+          margin: 1vh 2vw;
+          padding: 0 2vw;
+          border-radius: 2vw;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <MobileMenu />
+    <Header image="/images/header/tags-header.webp" />
+    <div class="single-page">
+      <main>
+        <h1>{t("header.tags")}</h1>
+        <div class="article-tags">{uniqueTags.map((tag) => <a href={`/${lang}/tags/${tag}`}><p>#{tag}</p></a>)}</div>
+      </main>
+    </div>
+    <Footer />
+  </body>
+</html>

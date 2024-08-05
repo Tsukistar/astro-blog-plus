@@ -1,0 +1,93 @@
+---
+import BaseHead from "../../components/BaseHead.astro";
+import SinglePageHead from "../../components/SinglePageHead.astro";
+import Header from "../../components/Header.astro";
+import MobileMenu from "../../components/MobileMenu.astro";
+import Footer from "../../components/Footer.astro";
+
+type LanguageCollection = "en";
+
+// 获取当前语言
+const url = new URL(Astro.request.url);
+const lang = url.pathname.split("/")[1] as LanguageCollection;
+
+// 动态加载翻译文件
+import translationsEn from "../../locales/en/translation.json";
+const translations = {
+  "en": translationsEn,
+}[lang];
+
+const t = (key: string) => {
+  const keys = key.split(".");
+  return (
+    keys.reduce(
+      (acc, k) => acc && (acc as { [key: string]: any })[k],
+      translations
+    ) || key
+  );
+};
+---
+
+<html lang=`${lang}`>
+  <head>
+    <BaseHead title={t("header.about")} description={t("site.description")} />
+    <SinglePageHead />
+    <style>
+      a {
+        text-decoration: none;
+      }
+      @media (max-width: 720px) {
+        hr {
+          margin: 1rem 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <MobileMenu />
+    <Header image="/images/header/about-header.webp" />
+    <div class="single-page">
+      <main>
+        <h1>{t("header.about")}</h1>
+        <p>
+          Hi there! I'm Tsukistar from Moonfall Galaxy, working as a software engineer primarily in the frontend domain. 
+          I'm continuously striving to become a Blogger and a Vtuber, hoping to make many good friends along the way! 
+          I enjoy expressing my thoughts in various ways, whether it's through a piece of code, a painting, a song, an article, or a simple blessing, hoping that these can bring joy to you all. 
+          The things that I invest my time, energy, and money into are often my favorites and the ones I am most willing to do. I always hope to maintain my creativity.
+          Life is like an ocean, and I'm delighted to have crossed paths with you.
+        </p>
+        <ul>
+          <li><strong>About My Tech Stack</strong></li>
+          <ul>
+            <li>Languages: HTML, CSS, JavaScript, Java, Python, SQL, C++</li>
+            <li>Frameworks: Vue, Astro, SpringBoot, Hono, OpenCV, YoLo</li>
+          </ul>
+          <li><strong>Find Me</strong></li>
+          <ul>
+            <li><a href="https://www.youtube.com/channel/UCPkuyPJuuFL7UWue-qtqzFQ" target="_blank" rel="noopener">YouTube</a>: Updates with live highlights and fun videos</li>
+            <li><a href="https://space.bilibili.com/102953" target="_blank" rel="noopener">Bilibili</a>: Synchronizes with YouTube videos, probably won't be doing live streams again</li>
+            <li><a href="https://twitter.com/tsukistarCN" target="_blank" rel="noopener">Twitter</a>: A place for various short ramblings, mostly casual thoughts</li>
+            <li><a href="https://github.com/Tsukistar" target="_blank" rel="noopener">Github</a>: Making open-source contributions, occasionally uploading code I enjoy writing</li>
+            <li><a href="https://steamcommunity.com/id/tsukistarGame/" target="_blank" rel="noopener">Steam</a>: Feel free to join me for some games!</li>
+          </ul>
+        </ul>
+        <hr />
+        <h4>About this Blog</h4>
+        <p>
+          When I first decided to create this blog, on the one hand, it was partly to have a convenient place to compile and record the technical knowledge I've gathered from various sources.
+          On the other hand, I wanted to go beyond just "technology" and write about my thoughts and insights on various topics. Sharing ideas that pop up at certain moments in life through writing can be quite enjoyable.
+        </p>
+        <p>
+          As far as I'm concerned, shorter content can be posted on Twitter, while longer pieces warrant a blog post to document them. If these articles are seen by others and prove to be helpful, that would be even better.
+        </p>        
+        <p>
+          Most of the images, fonts, and other materials used in this blog are sourced from commissions or within authorized scope, including but not limited to CC0 licensed images, open-source fonts, etc.
+        </p>
+        <p>
+          Special thanks to <a href="https://x.com/kukutaraccoon/status/1815157252766191953?s=46" target="_blank" rel="noopener">@kukutaraccoon</a> for providing the dreamy background material!
+        </p>        
+      </main>
+    </div>
+    <Footer />
+  </body>
+</html>

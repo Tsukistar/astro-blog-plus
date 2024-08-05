@@ -1,0 +1,89 @@
+---
+import BaseHead from "../../components/BaseHead.astro";
+import SinglePageHead from "../../components/SinglePageHead.astro";
+import Header from "../../components/Header.astro";
+import MobileMenu from "../../components/MobileMenu.astro";
+import Footer from "../../components/Footer.astro";
+
+type LanguageCollection = "zh-hant";
+
+// 获取当前语言
+const url = new URL(Astro.request.url);
+const lang = url.pathname.split("/")[1] as LanguageCollection;
+
+// 动态加载翻译文件
+import translationsZhHant from "../../locales/zh-hant/translation.json";
+const translations = {
+  "zh-hant": translationsZhHant,
+}[lang];
+
+const t = (key: string) => {
+  const keys = key.split(".");
+  return (
+    keys.reduce(
+      (acc, k) => acc && (acc as { [key: string]: any })[k],
+      translations
+    ) || key
+  );
+};
+---
+
+<html lang=`${lang}`>
+  <head>
+    <BaseHead title={t("header.about")} description={t("site.description")} />
+    <SinglePageHead />
+    <style>
+      a {
+        text-decoration: none;
+      }
+      @media (max-width: 720px) {
+        hr {
+          margin: 1rem 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <MobileMenu />
+    <Header image="/images/header/about-header.webp" />
+    <div class="single-page">
+      <main>
+        <h1>{t("header.about")}</h1>
+        <p>
+          你好呀，我是月落星河Tsukistar，主職前端方向軟體工程師，目前持續向個人部落格主與VTuber不斷努力中，希望能交到好多好朋友！
+          我喜歡將自己的想法用各種方式表達出來，不管是一份程式碼、一幅畫、一首歌，還是一篇文章、一句祝福，希望這些能為你們帶來快樂。那些讓我投入時間、精力、金錢的事情，往往是我最喜歡，也是最願意去做的事，也一直希望自己可以保持創造力。
+          人生海海，很高興能夠與你相遇。
+        </p>
+        <ul>
+          <li><strong>關於我使用的技術棧</strong></li>
+          <ul>
+            <li>語言：HTML、CSS、JavaScript、Java、Python、SQL、C++</li>
+            <li>框架：Vue、Astro、SpringBoot、Hono、OpenCV、YoLo</li>
+          </ul>
+          <li><strong>在其他地方找到我</strong></li>
+          <ul>
+            <li><a href="https://www.youtube.com/channel/UCPkuyPJuuFL7UWue-qtqzFQ" target="_blank" rel="noopener">YouTube</a>：更新實況剪輯和偶爾有的整活影片</li>
+            <li><a href="https://space.bilibili.com/102953" target="_blank" rel="noopener">嗶哩嗶哩</a>：與YouTube同步更新視頻，大概不會回去開台了</li>
+            <li><a href="https://twitter.com/tsukistarCN" target="_blank" rel="noopener">Twitter</a>：發各種短篇廢文的地方，碎碎念為主</li>
+            <li><a href="https://github.com/Tsukistar" target="_blank" rel="noopener">Github</a>：做些開源貢獻，偶爾寫點自己喜歡寫的程式碼推上去</li>
+            <li><a href="https://steamcommunity.com/id/tsukistarGame/" target="_blank" rel="noopener">Steam</a>：歡迎來一起玩！</li>
+          </ul>
+        </ul>
+                
+        <hr />
+        <h4>關於這個部落格</h4>
+        <p>
+          最開始決定建立這個部落格，一方面是打算把它作為一個自己的便於查閱的技術文件，將自己從各個渠道學習到的東西收集和記錄下來。另一方面我又想讓自己儘可能不侷限於“技術”，而是立足多個方面寫一些自己的感悟之類的文章，將一些在生命中某個時刻突然冒出來的想法，透過文字的方式和大家講一講，也是一件有趣的事。
+        </p>
+        <p>
+          在我看來，篇幅比較短的內容發在推特上就可以了，篇幅長一些的就有必要寫一篇博文記錄一下了。當然，如果這些文章被大家看到，並且起了幫助性的作用，那便再好不過了。
+        </p>
+        <p>
+          關於本部落格使用的圖片、字體與其他各類素材，大部分來源於本人約稿或授權範圍內的素材，包括但不限於CC0授權許可圖片、開源字體等。
+          在此特別感謝 <a href="https://x.com/kukutaraccoon/status/1815157252766191953?s=46" target="_blank" rel="noopener">@kukutaraccoon</a>老師提供的背景素材，超級夢幻！
+        </p>        
+      </main>
+    </div>
+    <Footer />
+  </body>
+</html>

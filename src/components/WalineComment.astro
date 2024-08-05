@@ -1,0 +1,44 @@
+---
+const { lang } = Astro.props;
+---
+<div id="waline-comment" class=`${lang}`></div>
+<script>
+  import { init } from "@waline/client";
+  import "@waline/client/style";
+  const walineComment = document.getElementById("waline-comment");
+  let targetLang = walineComment === null ? "zh-cn" : walineComment.className;
+  if (targetLang === "zh-hans") {
+    targetLang = "zh-cn";
+  } else if (targetLang === "zh-hant") {
+    targetLang = "zh-tw";
+  }
+  const lang = targetLang;
+
+  init({
+    el: "#waline-comment",
+    serverURL: "https://waline.tsukistar.cc",
+    dark: "html.dark",
+    pageview: true, 
+    comment: true,
+    lang: lang,
+    locale: {
+      placeholder:
+        "评论会在博主查看后显示喔(๑´ㅂ`๑)\n評論會在博主查看後顯示喔(๑´ㅂ`๑)\nThe comment will be displayed after the blogger views it.(๑´ㅂ`๑)",
+    },
+    emoji: ["https://unpkg.com/@waline/emojis@1.2.0/bilibili"],
+    reaction: [
+      "https://unpkg.com/@waline/emojis@1.1.0/bilibili/bb_doge.png",
+      "https://unpkg.com/@waline/emojis@1.1.0/bilibili/bb_cry.png",
+      "https://unpkg.com/@waline/emojis@1.1.0/bilibili/bb_thumbsup.png",
+      "https://unpkg.com/@waline/emojis@1.1.0/bilibili/bb_question_mask.png",
+      "https://unpkg.com/@waline/emojis@1.1.0/bilibili/bb_sleep.png",
+    ],
+  });
+</script>
+<style>
+  :root {
+    --waline-color: #987D9A !important;
+    --waline-theme-color: #478ccf !important;
+    --waline-info-color: #B692C2 !important;
+  }
+</style>

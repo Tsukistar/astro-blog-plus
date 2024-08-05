@@ -1,0 +1,52 @@
+---
+import BaseHead from "../../components/BaseHead.astro";
+import SinglePageHead from "../../components/SinglePageHead.astro";
+import Header from "../../components/Header.astro";
+import MobileMenu from "../../components/MobileMenu.astro";
+import WalineComment from "../../components/WalineComment.astro";
+import Footer from "../../components/Footer.astro";
+
+type LanguageCollection = "en";
+
+// 获取当前语言
+const url = new URL(Astro.request.url);
+const lang = url.pathname.split("/")[1] as LanguageCollection;
+
+// 动态加载翻译文件
+import translationsEn from "../../locales/en/translation.json";
+const translations = {
+  "en": translationsEn,
+}[lang];
+
+const t = (key: string) => {
+  const keys = key.split(".");
+  return (
+    keys.reduce(
+      (acc, k) => acc && (acc as { [key: string]: any })[k],
+      translations
+    ) || key
+  );
+};
+---
+<html lang=`${lang}`>
+  <head>
+    <BaseHead title={t("header.message-board")} description={t("site.description")} />
+    <SinglePageHead />
+    <style>
+      @media (max-width: 720px) {
+      }
+    </style>
+  </head>
+  <body>
+    <MobileMenu />
+    <Header image="/images/header/message-board-header.webp" />
+    <div class="single-page">
+      <main>
+        <h1>{t("header.message-board")}</h1>
+        <p>This is a message board. Feel free to leave any messages you want to share with me here (,,・ω・,,)</p>
+        <WalineComment lang="en" />
+      </main>
+    </div>
+    <Footer />
+  </body>
+</html>

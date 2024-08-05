@@ -1,0 +1,81 @@
+---
+import BaseHead from "../../components/BaseHead.astro";
+import Header from "../../components/Header.astro";
+import MobileMenu from "../../components/MobileMenu.astro";
+import Footer from "../../components/Footer.astro";
+import FormattedDate from "../../components/FormattedDate.astro";
+import { getCollection } from "astro:content";
+
+type LanguageCollection = "zh-hans";
+
+// 获取当前语言
+const url = new URL(Astro.request.url);
+const lang = url.pathname.split("/")[1] as LanguageCollection;
+
+const posts = (await getCollection(lang)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+// 动态加载翻译文件
+import translationsZhHans from "../../locales/zh-hans/translation.json";
+import MainBlogHead from "../../components/MainBlogHead.astro";
+const translations = {
+  "zh-hans": translationsZhHans,
+}[lang];
+
+const t = (key: string) => {
+  const keys = key.split(".");
+  return (
+    keys.reduce(
+      (acc, k) => acc && (acc as { [key: string]: any })[k],
+      translations
+    ) || key
+  );
+};
+---
+
+<!doctype html>
+<html lang=`${lang}`>
+  <head>
+    <BaseHead title={t("site.title")} description={t("site.description")} image="/images/blog-header.webp"/>
+    <MainBlogHead />
+    <style>
+      @media(max-width: 720px) {
+        
+      }
+    </style>
+  </head>
+  <body>
+    <MobileMenu />
+    <Header />
+    <div class="main-blog">
+      <main>
+        <section>
+          <ul>
+            {
+              posts.map((post) => (
+                <li>
+                  <a href={`/${lang}/${post.slug}/`}>
+                    <img
+                      width={720}
+                      height={360}
+                      src={post.data.heroImage}
+                      alt=""
+                    />
+                    <h4 class="title">{post.data.title}</h4>
+                    <p class="date">
+                      <div>
+                        <FormattedDate date={post.data.pubDate} />
+                      </div>
+                    </p>
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </section>
+      </main>
+    </div>
+    <Footer />
+  </body>
+</html>

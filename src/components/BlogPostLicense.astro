@@ -1,0 +1,59 @@
+---
+// 动态加载翻译文件
+import translationsZhHans from "../locales/zh-hans/translation.json";
+import translationsZhHant from "../locales/zh-hant/translation.json";
+import translationsEn from "../locales/en/translation.json";
+
+type LanguageCollection = "zh-hans" | "zh-hant" | "en";
+// 获取当前语言
+const url = new URL(Astro.request.url);
+const lang = url.pathname.split("/")[1] as LanguageCollection;
+const translations = {
+  "zh-hans": translationsZhHans,
+  "zh-hant": translationsZhHant,
+  en: translationsEn,
+}[lang];
+const t = (key: string) => {
+  const keys = key.split(".");
+  return (
+    keys.reduce(
+      (acc, k) => acc && (acc as { [key: string]: any })[k],
+      translations
+    ) || key
+  );
+};
+---
+
+<p class="license-show">
+  {t("article.license_before")}
+  <a
+    href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
+    target="_blank"
+    rel="noopener noreferrer"><strong>CC BY-NC-SA 4.0</strong></a
+  >
+  {t("article.license_after")}
+</p>
+<style>
+	p.license-show {
+    padding: 1em;
+		margin: 1em 0;
+    border: aliceblue 1px solid;
+		border-radius: 5px;
+		background-color: rgba(255, 255, 255, 0.3);
+		backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+	}
+	:global(.dark) p.license-show {
+		border: #f7dcb9 1px solid;
+		background-color: rgba(0, 0, 0, 0.3);
+	}
+	p.license-show a:hover {
+    color: #b692c2;
+  }
+	:global(.dark) p.license-show a {
+    color: #f7dcb9;
+  }
+  :global(.dark) p.license-show a:hover {
+    color: antiquewhite;
+  }
+</style>

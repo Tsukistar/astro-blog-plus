@@ -1,0 +1,82 @@
+---
+import BaseHead from "../../components/BaseHead.astro";
+import SinglePageHead from "../../components/SinglePageHead.astro";
+import Header from "../../components/Header.astro";
+import MobileMenu from "../../components/MobileMenu.astro";
+import Footer from "../../components/Footer.astro";
+import { getCollection } from "astro:content";
+
+type LanguageCollection = "en";
+
+// 获取当前语言
+const url = new URL(Astro.request.url);
+const lang = url.pathname.split("/")[1] as LanguageCollection;
+
+// 动态加载翻译文件
+import translationsEn from "../../locales/en/translation.json";
+const translations = {
+  "en": translationsEn,
+}[lang];
+
+const t = (key: string) => {
+  const keys = key.split(".");
+  return (
+    keys.reduce(
+      (acc, k) => acc && (acc as { [key: string]: any })[k],
+      translations
+    ) || key
+  );
+};
+
+// 加载所有文章
+const allPosts = await getCollection("en");
+// 按年份分类并排序
+const postsByYear = allPosts.reduce((acc, post) => {
+  const year = new Date(post.data.pubDate).getFullYear();
+  if (!acc[year]) acc[year] = [];
+  acc[year].push(post);
+  return acc;
+}, {} as { [year: number]: typeof allPosts });
+// 将每个年份内的文章按日期从新到旧排序
+Object.keys(postsByYear).forEach((year) => {
+  postsByYear[year as unknown as number].sort((a, b) => new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime());
+});
+// 按年份从新到旧排序
+const sortedYears = Object.keys(postsByYear).sort((a, b) => Number(b) - Number(a));
+---
+
+<html lang=`${lang}`>
+  <head>
+    <BaseHead title={t("header.archives")} description={t("site.description")} />
+    <SinglePageHead />
+    <style>
+      
+      @media (max-width: 720px) {
+
+      }
+    </style>
+  </head>
+  <body>
+    <MobileMenu />
+    <Header image="/images/header/archives-header.webp" />
+    <div class="single-page">
+      <main>
+        <h1>{t("header.archives")}</h1>
+        {sortedYears.map((year) => (
+          <details open>
+            <summary>{year}，共{postsByYear[year as unknown as number].length}篇</summary>
+            <ul>
+              {postsByYear[year as unknown as number].map((post) => (
+                <li class="article-info">
+                  <span class="article-date">{new Date(post.data.pubDate).toLocaleDateString(lang)}</span>
+                  <a href={`/zh-hans/${post.slug}/`}>{post.data.title}</a>
+                </li>
+              ))}
+            </ul>
+          </details>
+        ))}
+      </main>
+    </div>
+    <Footer />
+  </body>
+</html>

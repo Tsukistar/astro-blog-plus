@@ -1,85 +1,329 @@
 ---
-import type { CollectionEntry } from 'astro:content';
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import FormattedDate from '../components/FormattedDate.astro';
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import MobileMenu from "../components/MobileMenu.astro";
+import BlogPostLicense from "../components/BlogPostLicense.astro";
+import WalineComment from "../components/WalineComment.astro";
+import Footer from "../components/Footer.astro";
+import FormattedDate from "../components/FormattedDate.astro";
 
-type Props = CollectionEntry<'blog'>['data'];
+type LanguageCollection = "zh-hans" | "zh-hant" | "en";
+
+// 获取当前语言
+const url = new URL(Astro.request.url);
+const lang = url.pathname.split("/")[1] as LanguageCollection;
+
+// 动态加载翻译文件
+import translationsZhHans from "../locales/zh-hans/translation.json";
+import translationsZhHant from "../locales/zh-hant/translation.json";
+import translationsEn from "../locales/en/translation.json";
+const translations = {
+  "zh-hans": translationsZhHans,
+  "zh-hant": translationsZhHant,
+  en: translationsEn,
+}[lang];
+
+const t = (key: string) => {
+  const keys = key.split(".");
+  return (
+    keys.reduce(
+      (acc, k) => acc && (acc as { [key: string]: any })[k],
+      translations
+    ) || key
+  );
+};
 
 const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 ---
 
-<html lang="en">
-	<head>
-		<BaseHead title={title} description={description} />
-		<style>
-			main {
-				width: calc(100% - 2em);
-				max-width: 100%;
-				margin: 0;
-			}
-			.hero-image {
-				width: 100%;
-			}
-			.hero-image img {
-				display: block;
-				margin: 0 auto;
-				border-radius: 12px;
-				box-shadow: var(--box-shadow);
-			}
-			.prose {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 1em;
-				color: rgb(var(--gray-dark));
-			}
-			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
-				text-align: center;
-				line-height: 1;
-			}
-			.title h1 {
-				margin: 0 0 0.5em 0;
-			}
-			.date {
-				margin-bottom: 0.5em;
-				color: rgb(var(--gray));
-			}
-			.last-updated-on {
-				font-style: italic;
-			}
-		</style>
-	</head>
+<html lang={lang}>
+  <head>
+    <BaseHead title={title} description={description} image={heroImage} />
+    <style>
+      .main-blog {
+        transition:
+          background 0.5s ease-in-out,
+          color 0.5s ease-in-out;
+        background: url("/images/main-background-light.webp") no-repeat center
+          center fixed;
+        background-size: cover;
+      }
+      .dark .main-blog {
+        background: url("/images/main-background-dark.webp") no-repeat center
+          center fixed;
+        background-size: cover;
+      }
 
-	<body>
-		<Header />
-		<main>
-			<article>
-				<div class="hero-image">
-					{heroImage && <img width={1020} height={510} src={heroImage} alt="" />}
-				</div>
-				<div class="prose">
-					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
-							{
-								updatedDate && (
-									<div class="last-updated-on">
-										Last updated on <FormattedDate date={updatedDate} />
-									</div>
-								)
-							}
-						</div>
-						<h1>{title}</h1>
-						<hr />
-					</div>
-					<slot />
-				</div>
-			</article>
-		</main>
-		<Footer />
-	</body>
+      main {
+        width: calc(100% - 2em);
+        max-width: 100%;
+        margin: 0;
+      }
+      .dark main * {
+        color: #d8ae7e;
+      }
+
+      .hero-image {
+        width: 100%;
+      }
+      .hero-image img {
+        display: block;
+        margin: 0 auto;
+        border-radius: 12px;
+        box-shadow: var(--box-shadow);
+      }
+
+      .prose {
+        width: 720px;
+        max-width: calc(100% - 2em);
+        margin: auto;
+        padding: 1em;
+        color: rgb(var(--gray-dark));
+      }
+      .title {
+        margin-bottom: 1em;
+        text-align: center;
+        line-height: 1;
+      }
+
+      .wl-sort ul {
+        flex-wrap: nowrap;
+      }
+      ul li:first-child {
+        width: calc(50% - 1rem);
+      }
+
+      .article-description {
+        text-align: left;
+        font-style: oblique;
+        margin-bottom: 1em;
+        padding: 1em;
+        border: #393e46 1px solid;
+        border-radius: 10px;
+        background-color: rgba(238, 238, 238, 0.2);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+      }
+      .dark .article-description {
+        border: #d8ae7e 1px solid;
+        background-color: rgba(57, 62, 70, 0.2);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+      }
+
+      .read-and-comment-count {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 10px 0;
+      }
+      .read-count {
+        display: flex;
+        align-items: center;
+        margin-right: 1em;
+      }
+      .waline-pageview-count {
+        margin-left: 5px;
+      }
+      .comment-count {
+        display: flex;
+        align-items: center;
+      }
+      .waline-comment-count {
+        margin-left: 5px;
+      }
+
+      .date {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin: 1em 0;
+        color: rgb(var(--gray));
+      }
+      .publication {
+        font-weight: bolder;
+        text-align: left;
+      }
+      .last-updated-on {
+        margin: 0.5em 0 0 0;
+        font-weight: bolder;
+        text-align: left;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      .dark .links a {
+        color: #d8ae7e;
+      }
+      .dark .links a:hover {
+        color: #f7dcb9;
+      }
+
+      hr {
+        border: none;
+        border-top: 1px solid #01204e;
+      }
+      .dark hr {
+        border-top: 1px solid #d8ae7e;
+      }
+
+      .user-operation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .donate-button {
+        margin: 1em 0;
+        color: #01204e;
+        font-size: 0.8em;
+        font-weight: bolder;
+        text-align: center;
+        width: 150px;
+        padding: 0.5em;
+        border: #01204e 3px solid;
+        background-color: rgba(238, 238, 238, 0.5);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+      }
+      .donate-button:hover {
+        transition: ease-in-out 0.3s;
+        background-color: #01204e;
+        color: #fff;
+      }
+      .dark .donate-button {
+        border: #d8ae7e 3px solid;
+        background-color: rgba(57, 62, 70, 0.5);
+      }
+      .dark .donate-button:hover {
+        background-color: #d8ae7e;
+        color: #000;
+      }
+
+      .social-links {
+        display: flex;
+        align-items: center;
+        gap: 1em;
+        margin-left: 1em;
+      }
+      .social-links a {
+        text-decoration: none;
+        color: #146c94;
+      }
+
+      @media (max-width: 720px) {
+        .prose {
+          padding: 0.5em;
+        }
+        .title h1 {
+          font-size: 2rem;
+        }
+        .article-description {
+          line-height: normal;
+        }
+        .donate-button {
+          font-size: 0.6em;
+          width: 80px;
+          padding: 0.3em;
+        }
+        .social-links {
+          gap: 0.5em;
+        }
+        svg {
+          width: 24px;
+          height: 24px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <MobileMenu />
+    <Header image={heroImage} />
+    <div class="main-blog">
+      <main>
+        <article>
+          <div class="prose">
+            <div class="title">
+              <h1>{title}</h1>
+              <div class="read-and-comment-count">
+                <div class="read-count">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    ><path
+                      fill="currentColor"
+                      d="M10 4.4C3.439 4.4 0 9.232 0 10c0 .766 3.439 5.6 10 5.6c6.56 0 10-4.834 10-5.6c0-.768-3.44-5.6-10-5.6m0 9.907c-2.455 0-4.445-1.928-4.445-4.307c0-2.379 1.99-4.309 4.445-4.309s4.444 1.93 4.444 4.309c0 2.379-1.989 4.307-4.444 4.307M10 10c-.407-.447.663-2.154 0-2.154c-1.228 0-2.223.965-2.223 2.154s.995 2.154 2.223 2.154c1.227 0 2.223-.965 2.223-2.154c0-.547-1.877.379-2.223 0"
+                    ></path></svg
+                  ><span class="waline-pageview-count"></span>
+                </div>
+                <div class="comment-count">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 16 16"
+                    ><path
+                      fill-rule="evenodd"
+                      d="M14 1H2c-.55 0-1 .45-1 1v8c0 .55.45 1 1 1h2v3.5L7.5 11H14c.55 0 1-.45 1-1V2c0-.55-.45-1-1-1zm0 9H7l-2 2v-2H2V2h12v8z"
+                      fill="currentColor"></path></svg
+                  >
+                  <span class="waline-comment-count"></span>
+                </div>
+              </div>
+              <div class="article-description">{description}</div>
+              <div class="date">
+                <div class="publication">
+                  {t("article.pubDate")}<FormattedDate date={pubDate} />
+                </div>
+                {
+                  updatedDate && (
+                    <div class="last-updated-on">
+                      {t("article.updateDate")}
+                      <FormattedDate date={updatedDate} />
+                    </div>
+                  )
+                }
+              </div>
+              <hr />
+            </div>
+            <slot />
+            <div class="user-operation">
+              <a
+                href="https://buy.stripe.com/7sI6oPc4z9afegUdQU"
+                target="_blank"
+                rel="noopener"
+                ><div class="donate-button">{t("article.coffee")}</div></a
+              >
+              <div class="social-links">
+                <a
+                  href=`https://x.com/intent/post?url=${url}&text=我发布了一篇博文: ${title}\n`
+                  target="_blank"
+                  rel="noopener"
+                  ><svg
+                    viewBox="0 0 16 16"
+                    aria-hidden="true"
+                    width="32"
+                    height="32"
+                    astro-icon="social/twitter"
+                    ><path
+                      fill="currentColor"
+                      d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z"
+                    ></path></svg
+                  >
+                </a>
+              </div>
+            </div>
+            <BlogPostLicense lang={`${lang}`} />
+            <WalineComment lang=`${lang}` />
+          </div>
+        </article>
+      </main>
+    </div>
+    <Footer />
+  </body>
 </html>

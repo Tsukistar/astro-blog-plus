@@ -1,0 +1,66 @@
+---
+const languages = [
+  { code: 'en', label: 'English' },
+  { code: 'zh-hans', label: '简体中文' },
+  { code: 'zh-hant', label: '正體中文' }
+];
+---
+<div class="languages">
+  <select id="language-selector">
+    {languages.map(lang => (
+      <option value={lang.code} selected={lang.code === Astro.props.currentLang}>{`${lang.label}`}</option>
+    ))}
+  </select>
+</div>
+
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', () => {
+    const selector = document.getElementById('language-selector');
+
+    selector.addEventListener('change', (event) => {
+      const newLang = (event.target).value;
+      const url = window.location.href;
+      
+      const urlParts = url.split('/');
+      urlParts[3] = newLang;
+      
+      const newUrl = urlParts.join('/');
+      window.location.href = newUrl;
+    });
+  });
+</script>
+
+<style>
+  .languages {
+    display: flex;
+  }
+  .languages svg {
+    margin-right: 0.5em;
+  }
+  #language-selector {
+    padding: 0.5em;
+    font-size: 1em;
+    border: 1px solid rgb(var(--gray));
+    border-radius: 30px;
+    background: none;
+  }
+  #language-selector:hover {
+    border-color: rgb(var(--gray-dark));
+  }
+  #language-selector:focus {
+    outline: none;
+    border-color: rgb(var(--gray-dark));
+  }
+  :global(.dark) #language-selector {
+    color:#d8ae7e;
+    border-color: #d8ae7e;
+    background: none;
+  }
+
+  @media (max-width: 720px) {
+    #language-selector {
+      font-size: 0.8em;
+    }
+    
+  }
+</style>
