@@ -64,7 +64,7 @@ const sortedYears = Object.keys(postsByYear).sort((a, b) => Number(b) - Number(a
         <h1>{t("header.archives")}</h1>
         {sortedYears.map((year) => (
           <details open>
-            <summary>{year}，共{postsByYear[year as unknown as number].length}篇</summary>
+            <summary>{year}，{postsByYear[year as unknown as number].length} posts.</summary>
             <ul>
               {postsByYear[year as unknown as number].map((post) => (
                 <li class="article-info">
