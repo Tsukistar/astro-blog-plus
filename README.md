@@ -19,7 +19,7 @@ You can fork this repository and deploy your own version to Vercel by clicking t
 
 - ✅ All the features of the original "blog" template are included.
 - ✅ Mobile layout optimization.
-- ✅ Support for Astro's built-in pagination.
+- ✅ Support for Astro's built-in pagination and top up your post.
 - ✅ Integration with the [Waline Comment System](https://waline.js.org/).
 - ✅ Dark mode and light mode switch.
 - ✅ Internationalization (i18n) routing.
@@ -77,46 +77,11 @@ The project includes the following folders and files:
             single-page.css
 ```
 
-- Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each file is exposed as a route based on its file name. When enabling i18n routing, the `astro.config.mjs` should be configured as follows:
-
-```javascript
-import { defineConfig } from "astro/config";
-import mdx from "@astrojs/mdx";
-import sitemap from "@astrojs/sitemap";
-
-// https://astro.build/config
-export default defineConfig({
-  site: "https://example.com",
-  integrations: [mdx(), sitemap()],
-  i18n: {
-    defaultLocale: "zh-hans",
-    locales: ["zh-hans", "zh-hant", "en"],
-    routing: {
-      prefixDefaultLocale: true,
-      redirectToDefaultLocale: false
-    }
-  },
-});
-```
-
-The `prefixDefaultLocale` option is set to `true`, so if you visit the English version of the site, the URL should be `https://astro-blog-plus.vercel.app/en`. The `redirectToDefaultLocale` option is set to `false`, so if you visit `https://astro-blog-plus.vercel.app`, you will see the content of `index.astro` in the `./pages` directory.
+- Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each file is exposed as a route based on its file name.
 
 - The `components` folder contains various reusable components. To develop new components, you can add a `.astro` file in this folder and import it wherever needed.
 
-- For i18n, this template supports three languages: zh-hans (Simplified Chinese), zh-hant (Traditional Chinese), and en (English). To add a new language, such as Japanese, you need to include it in `astro.config.mjs` under `defineConfig - i18n - locales`, like so:
-
-```javascript
-i18n: {
-    defaultLocale: "zh-hans",
-    locales: ["zh-hans", "zh-hant", "en", "jp"],
-    routing: {
-      prefixDefaultLocale: true,
-      redirectToDefaultLocale: false
-    }
-  },
-```
-
-Then, create a new folder named "jp" in the `pages`, `content`, and `locales` directories. Additionally, add a `jp.xml.js` file in `src/pages/rss`. Finally, include `translation.json` and `friends.json` in `/src/locales/jp` with the necessary translations.
+- For i18n, this template supports three languages: zh-hans (Simplified Chinese), zh-hant (Traditional Chinese), and en (English). To add a new language, such as Japanese, you need to create a new folder named "jp" in the `pages`, `content`, and `locales` directories. Additionally, add a `jp.xml.js` file in `src/pages/rss`. Finally, include `translation.json` and `friends.json` in `/src/locales/jp` with the necessary translations.
 
 - The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/` and type-check your frontmatter using an optional schema. For more details, see [Astro's Content Collections documentation](https://docs.astro.build/en/guides/content-collections/).
 
