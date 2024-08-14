@@ -5,7 +5,6 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://tsukistar.github.io',
-	base: 'astro-blog-plus',
+	site: 'https://tsukistar.github.io/astro-blog-plus/',
 	integrations: [mdx(), sitemap()],
 });

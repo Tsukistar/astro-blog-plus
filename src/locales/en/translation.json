@@ -21,11 +21,12 @@
         "tags": "Tags: ",
         "license_before":"Unless otherwise stated, all articles on this blog are licensed under",
         "license_after":"license. The author reserves all rights. Please credit the source if you wish to reprint.",
-        "coffee": "Buy me a coffee"
+        "coffee": "Buy me a coffee",
+        "share": "I published a new post: "
     },
     "footer": {
         "build_with": "This blog has been built with ", 
         "theme": ", Theme: ",
-        "update_days": "The author has been blogging for {{daysDiff}} days."
+        "update_days": "The author has been writing for {{daysDiff}} days."
     }
 }

@@ -1,8 +1,8 @@
 [
     {
-        "name": "Tsukistar's Fantasy World",
-        "icon": "/images/pages/friends/personal.webp",
-        "url": "https://www.tsukistar.cc",
+        "name": "Tsukistar's Freetalk",
+        "icon": "https://blog.tsukistar.cc/images/site-icon.webp",
+        "url": "https://blog.tsukistar.cc",
         "description": "Coding for the wonderful world."
     }
 ]

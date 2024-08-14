@@ -5,11 +5,11 @@ import ThemeIcon from "./ThemeIcon.astro";
 
 type LanguageCollection = "zh-hans" | "zh-hant" | "en";
 
-// 获取当前语言
+// get current language from the URL
 const url = new URL(Astro.request.url);
 const lang = url.pathname.split("/")[1] as LanguageCollection;
 
-// 动态加载翻译文件
+// loading translations
 import translationsZhHans from "../locales/zh-hans/translation.json";
 import translationsZhHant from "../locales/zh-hant/translation.json";
 import translationsEn from "../locales/en/translation.json";
@@ -29,18 +29,18 @@ const t = (key: string) => {
   );
 };
 
-// 动态加载header背景图
-const { image = "/images/header/blog-header.webp" } = Astro.props;
+// loading the header image dynamically
+const { image = "/images/header/example-header.jpg" } = Astro.props;
 ---
 
 <div class="blog-title" style=`background-image: url(${image});`>
   <header>
     <nav>
       <div class="site-logo">
-        <a href=`/${lang}`>
+        <a href=`/${lang}`><!-- change it to your own content -->
           <img
             class="site-logo"
-            src="/images/site-logo.webp"
+            src="/favicon.svg"
             decoding="async"
             loading="lazy"
           />

@@ -1,11 +1,9 @@
 ---
-// 动态加载翻译文件
 import translationsZhHans from "../locales/zh-hans/translation.json";
 import translationsZhHant from "../locales/zh-hant/translation.json";
 import translationsEn from "../locales/en/translation.json";
 
 type LanguageCollection = "zh-hans" | "zh-hant" | "en";
-// 获取当前语言
 const url = new URL(Astro.request.url);
 const lang = url.pathname.split("/")[1] as LanguageCollection;
 const translations = {
@@ -25,7 +23,7 @@ const t = (key: string) => {
 ---
 
 <p class="license-show">
-  {t("article.license_before")}
+  {t("article.license_before")}<!-- change the license you use -->
   <a
     href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
     target="_blank"

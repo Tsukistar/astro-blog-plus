@@ -1,16 +1,13 @@
 ---
 import HeaderLink from "./HeaderLink.astro";
-
-type LanguageCollection = "zh-hans" | "zh-hant" | "en";
-
-// 获取当前语言
-const url = new URL(Astro.request.url);
-const lang = url.pathname.split("/")[1] as LanguageCollection;
-
-// 动态加载翻译文件
 import translationsZhHans from "../locales/zh-hans/translation.json";
 import translationsZhHant from "../locales/zh-hant/translation.json";
 import translationsEn from "../locales/en/translation.json";
+
+type LanguageCollection = "zh-hans" | "zh-hant" | "en";
+const url = new URL(Astro.request.url);
+const lang = url.pathname.split("/")[1] as LanguageCollection;
+
 const translations = {
   "zh-hans": translationsZhHans,
   "zh-hant": translationsZhHant,
@@ -31,7 +28,7 @@ const t = (key: string) => {
 <div id="overlay"></div>
 <div id="slide-out-div">
   <div class="intro">
-    <center><img class="favicon" src="/images/site-icon.jpg" /></center>
+    <center><img class="favicon" src="/favicon.svg" /></center>
     <center
       ><strong><p>{t("site.title")}</p></strong><center>
         <p>{t("site.description")}</p>

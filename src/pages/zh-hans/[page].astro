@@ -4,17 +4,14 @@ import Header from "../../components/Header.astro";
 import MobileMenu from "../../components/MobileMenu.astro";
 import Footer from "../../components/Footer.astro";
 import FormattedDate from "../../components/FormattedDate.astro";
+import translationsZhHans from "../../locales/zh-hans/translation.json";
+import MainBlogHead from "../../components/MainBlogHead.astro";
 import { getCollection } from "astro:content";
 
 type LanguageCollection = "zh-hans";
-
-// 获取当前语言
 const url = new URL(Astro.request.url);
 const lang = url.pathname.split("/")[1] as LanguageCollection;
 
-// 动态加载翻译文件
-import translationsZhHans from "../../locales/zh-hans/translation.json";
-import MainBlogHead from "../../components/MainBlogHead.astro";
 const translations = {
   "zh-hans": translationsZhHans,
 }[lang];
@@ -34,16 +31,26 @@ interface PaginateFunction {
 }
 
 export async function getStaticPaths({ paginate }: { paginate: PaginateFunction }) {
-  const posts = (await getCollection("zh-hans")).sort(
+  const topPosts = (await getCollection("zh-hans")).filter(
+    (post) => post.data.top !== undefined && post.data.top > 0
+  ).sort(
+    (a, b) => (b.data.top ?? 0) - (a.data.top ?? 0)
+  );
+  const otherPosts = (await getCollection("zh-hans")).filter(
+    (post) => post.data.top === undefined || post.data.top === 0
+  ).sort(
     (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
   );
+  const posts = topPosts.concat(otherPosts);
   return paginate(posts, { pageSize: 5 });
 }
 
-// 所有分页数据都在 "page" 参数中传递
+export const prerender = true;
+
+// use Astro's built-in pagination
 const { page }: any = Astro.props;
 
-// 生成页码链接的函数
+// generate page links
 function generatePageLinks(currentPage: number, lastPage: number): (number | string)[] {
   const pages: any = [];
   if (lastPage <= 1) return pages;
@@ -78,10 +85,11 @@ function generatePageLinks(currentPage: number, lastPage: number): (number | str
 <!doctype html>
 <html lang={`${lang}`}>
   <head>
+    <link rel="preload" fetchpriority="high" as="image" href="/images/blog-header.webp" type="image/webp" />
     <BaseHead
       title={t("site.title")}
       description={t("site.description")}
-      image="/images/header/blog-header.webp"
+      image="/images/blog-header.webp"
     />
     <MainBlogHead />
     <style>
@@ -102,6 +110,25 @@ function generatePageLinks(currentPage: number, lastPage: number): (number | str
       .pagination-show a.bold {
         font-weight: bold;
       }
+      .isTop0 {
+        display: none;
+      }
+      .isTop1 {
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: #b692c2;
+        color: #fff;
+        padding: 0.5rem;
+        z-index: 5;
+        width: 50px;
+        text-align: center;
+        border-radius: 0 12px 0 0;
+      }
+      .dark .isTop1 {
+        background-color: black;
+      }
     </style>
   </head>
   <body>
@@ -114,6 +141,7 @@ function generatePageLinks(currentPage: number, lastPage: number): (number | str
             {
               page.data.map((post: any) => (
                 <li>
+                  <div class=`isTop${post.data.top > 0 ? 1 : 0}`>TOP</div>
                   <a href={`/${lang}/${post.slug}/`}>
                     <img
                       width={720}

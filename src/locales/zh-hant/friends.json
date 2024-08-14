@@ -1,8 +1,8 @@
 [
     {
-        "name": "星河夜夢記",
-        "icon": "/images/pages/friends/personal.webp",
-        "url": "https://www.tsukistar.cc",
+        "name": "星河絮語",
+        "icon": "https://blog.tsukistar.cc/images/site-icon.webp",
+        "url": "https://blog.tsukistar.cc",
         "description": "Coding for the wonderful world."
     }
 ]

@@ -54,6 +54,7 @@ body {
   padding: 0;
   text-align: left;
   background: linear-gradient(var(--gray-gradient)) no-repeat;
+  transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
   background-size: 100% 600px;
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -63,6 +64,7 @@ body {
 }
 .dark body {
   color: #d8ae7e;
+  background-color: #333;
 }
 
 main {
@@ -153,6 +155,9 @@ code {
   padding: 2px 5px;
   background-color: rgb(var(--gray-light));
   border-radius: 2px;
+}
+.dark code {
+  background-color: #3a3a3a;
 }
 pre {
   padding: 1.5em;

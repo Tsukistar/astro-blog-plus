@@ -301,7 +301,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
               >
               <div class="social-links">
                 <a
-                  href=`https://x.com/intent/post?url=${url}&text=我发布了一篇博文: ${title}\n`
+                  href=`https://x.com/intent/post?url=${url}&text=${t('article.share')}${title}\n`
                   target="_blank"
                   rel="noopener"
                   ><svg

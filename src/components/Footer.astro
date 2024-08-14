@@ -1,6 +1,6 @@
 ---
 const today = new Date();
-const created = new Date("2018-06-17"); // when the blog was created
+const created = new Date("2024-08-04"); // when the blog was created
 const timeDiff = Math.abs(today.getTime() - created.getTime());
 const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
@@ -46,9 +46,11 @@ const t = (key: string, params: { [key: string]: any } = {}) => {
 
 <footer>
   <div class="moe-icp">
-    <a href="https://icp.gov.moe/?keyword=20248225" target="_blank"
+    <!-- you can add your ICP number here
+      <a href="https://icp.gov.moe/?keyword=20248225" target="_blank"
       >萌ICP备20248225号</a
     >
+    -->
   </div>
   <div class="copyright">
     &copy; {today.getFullYear()} 月落星河Tsukistar. All rights reserved.
