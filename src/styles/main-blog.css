@@ -1,12 +1,8 @@
 .main-blog {
   transition: background 0.5s ease-in-out, color 0.5s ease-in-out;
-  background: url("/images/main-background-light.webp") no-repeat center center
-    fixed;
   background-size: cover;
 }
 .dark .main-blog {
-  background: url("/images/main-background-dark.webp") no-repeat center center
-    fixed;
   background-size: cover;
 }
 
