@@ -1,7 +1,9 @@
 {
-  "name": "vigorous-virgo",
+  "name": "astro-blog-plus",
+  "description": "A blog template built with Astro.",
+  "author": "Tsukistar",
   "type": "module",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
@@ -15,8 +17,8 @@
     "@astrojs/rss": "^4.0.7",
     "@astrojs/sitemap": "^3.1.6",
     "astro": "^4.13.1",
-    "typescript": "^5.5.4",
-    "vigorous-virgo": "file:"
+    "astro-blog-plus": "file:",
+    "typescript": "^5.5.4"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.1.2",
