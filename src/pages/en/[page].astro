@@ -47,10 +47,8 @@ export async function getStaticPaths({ paginate }: { paginate: PaginateFunction 
 
 export const prerender = true;
 
-// use Astro's built-in pagination
 const { page }: any = Astro.props;
 
-// generate page links
 function generatePageLinks(currentPage: number, lastPage: number): (number | string)[] {
   const pages: any = [];
   if (lastPage <= 1) return pages;
@@ -121,7 +119,7 @@ function generatePageLinks(currentPage: number, lastPage: number): (number | str
         background-color: #b692c2;
         color: #fff;
         padding: 0.5rem;
-        z-index: 5;
+        z-index: 3;
         width: 50px;
         text-align: center;
         border-radius: 0 12px 0 0;
